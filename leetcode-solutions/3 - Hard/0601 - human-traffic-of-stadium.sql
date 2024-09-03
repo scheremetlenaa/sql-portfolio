@@ -30,4 +30,4 @@ SELECT
 FROM CTE1
 INNER JOIN CTE2
     ON CTE1.grp = CTE2.grp
-ORDER BY visit_date;
+ORDER BY visit_date
