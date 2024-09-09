@@ -39,8 +39,6 @@ Assume that the table below displays all employees in the table:
 SELECT
   unique_queries,
   COUNT(employee_id) AS employee_count
---generate data to populate a histogram that shows the number of unique queries run by employees during the third quarter of 2023
-
 FROM (
     SELECT
         employees.employee_id,
