@@ -51,7 +51,7 @@ LIMIT 3;
 ## Result set
 
 | city | total_orders |
-| ------------ |
+| ---- | ------------ |
 | San Francisco | 4 |
 | Boston | 3 |
 | Denver | 2 |
