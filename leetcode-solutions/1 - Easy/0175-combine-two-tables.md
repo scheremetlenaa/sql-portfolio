@@ -17,7 +17,7 @@ Return the result table in any order.
 ```Person``` Table:
 
 | Column Name | Type    |
-| --------------------- |
+| ------------|-------- |
 | personId    | int     |
 | lastName    | varchar |
 | firstName   | varchar |
@@ -28,7 +28,7 @@ This table contains information about the ID of some persons and their first and
 ```Address``` Table:
 
 | Column Name | Type    |
-|-----------------------|
+|-------------|---------|
 | addressId   | int     |
 | personId    | int     |
 | city        | varchar |
