@@ -2,9 +2,8 @@
 
 ## Table Of Contents
 1. [Problem Statement]()
-2. [Datasets used]()
-3. [Solutions]()
-4. [Result set]()
+2. [Solutions]()
+3. [Result set]()
 
 ## Problem Statement
 
