@@ -290,7 +290,7 @@ SELECT
        	WHEN order_date BETWEEN join_date AND program_last_date THEN price*20
         WHEN order_date < join_date OR order_date > program_last_date THEN
         CASE
-        	WHEN product_name = 'sushi' THEN price*20
+            WHEN product_name = 'sushi' THEN price*20
             ELSE price*10
         END
     END) AS points
