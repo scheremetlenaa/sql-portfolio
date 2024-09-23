@@ -1,9 +1,9 @@
 # [Draw The Triangle 2](https://www.hackerrank.com/challenges/draw-the-triangle-2/)
 
 ## Table Of Contents
-1. [Problem Statement]()
-2. [Solutions]()
-3. [Result set]()
+1. [Problem Statement](#problem-statement)
+2. [Solutions](#solutions)
+3. [Result set](#result-set)
 
 ## Problem Statement
 

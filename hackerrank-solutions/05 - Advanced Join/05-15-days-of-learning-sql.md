@@ -1,10 +1,10 @@
 # [15 Days of Learning SQL](https://www.hackerrank.com/challenges/15-days-of-learning-sql/)
 
 ## Table Of Contents
-1. [Problem Statement]()
-2. [Datasets used]()
-3. [Solutions]()
-4. [Result set]()
+1. [Problem Statement](#problem-statement)
+2. [Datasets used](#datasets-used)
+3. [Solutions](#solutions)
+4. [Result set](#result-set)
 
 ## Problem Statement
 

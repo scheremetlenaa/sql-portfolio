@@ -1,10 +1,10 @@
 # [1179. Reformat Department Table](https://leetcode.com/problems/reformat-department-table/description/)
 
 ## Table Of Contents
-1. [Problem Statement]()
-2. [Datasets used]()
-3. [Solutions]()
-4. [Result set]()
+1. [Problem Statement](#problem-statement)
+2. [Datasets used](#datasets-used)
+3. [Solutions](#solutions)
+4. [Result set](#result-set)
 
 ## Problem Statement
 

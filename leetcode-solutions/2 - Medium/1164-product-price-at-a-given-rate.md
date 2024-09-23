@@ -1,10 +1,10 @@
 # [1164. Product Price at a Given Date](https://leetcode.com/problems/product-price-at-a-given-date/description/)
 
 ## Table Of Contents
-1. [Problem Statement]()
-2. [Datasets used]()
-3. [Solutions]()
-4. [Result set]()
+1. [Problem Statement](#problem-statement)
+2. [Datasets used](#datasets-used)
+3. [Solutions](#solutions)
+4. [Result set](#result-set)
 
 ## Problem Statement
 

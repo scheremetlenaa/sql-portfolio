@@ -1,10 +1,10 @@
 # [1148. Article Views I](https://leetcode.com/problems/article-views-i/description/)
 
 ## Table Of Contents
-1. [Problem Statement]()
-2. [Datasets used]()
-3. [Solutions]()
-4. [Result set]()
+1. [Problem Statement](#problem-statement)
+2. [Datasets used](#datasets-used)
+3. [Solutions](#solutions)
+4. [Result set](#result-set)
 
 ## Problem Statement
 

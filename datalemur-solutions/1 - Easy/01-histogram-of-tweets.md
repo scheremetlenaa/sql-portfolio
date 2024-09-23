@@ -1,10 +1,10 @@
 # [Histogram of Tweets [Twitter SQL Interview Question]](https://datalemur.com/questions/sql-histogram-tweets)
 
 ## Table Of Contents
-1. [Problem Statement](https://github.com/scheremetlenaa/sql-portfolio/new/main/datalemur-solutions/1%20-%20Easy#problem-statement)
-2. [Datasets used](https://github.com/scheremetlenaa/sql-portfolio/new/main/datalemur-solutions/1%20-%20Easy#datasets-used)
-3. [Solutions](https://github.com/scheremetlenaa/sql-portfolio/new/main/datalemur-solutions/1%20-%20Easy#solutions)
-4. [Result set](https://github.com/scheremetlenaa/sql-portfolio/new/main/datalemur-solutions/1%20-%20Easy#result-set)
+1. [Problem Statement](#problem-statement)
+2. [Datasets used](#datasets-used)
+3. [Solutions](#solutions)
+4. [Result set](#result-set)
 
 ## Problem Statement
 

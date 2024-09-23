@@ -1,10 +1,10 @@
 # [1581. Customer Who Visited but Did Not Make Any Transactions](https://leetcode.com/problems/customer-who-visited-but-did-not-make-any-transactions/description/)
 
 ## Table Of Contents
-1. [Problem Statement]()
-2. [Datasets used]()
-3. [Solutions]()
-4. [Result set]()
+1. [Problem Statement](#problem-statement)
+2. [Datasets used](#datasets-used)
+3. [Solutions](#solutions)
+4. [Result set](#result-set)
 
 ## Problem Statement
 
