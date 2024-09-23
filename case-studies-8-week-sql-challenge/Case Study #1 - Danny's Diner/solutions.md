@@ -223,3 +223,28 @@ WHERE dns_rnk = 1;
 
 ---
 
+### 8. What is the total items and amount spent for each member before they became a member?
+
+```sql
+SELECT
+    s.customer_id,
+    COUNT(product_name) AS item_count,
+    SUM(price) AS amount_spent
+FROM dannys_diner.sales s
+INNER JOIN dannys_diner.members mmb
+    ON s.customer_id = mmb.customer_id
+    AND order_date < join_date
+INNER JOIN dannys_diner.menu mn
+    ON s.product_id = mn.product_id
+GROUP BY s.customer_id
+ORDER BY customer_id;
+```
+#### Result set
+
+| customer_id | item_count | amount_spent |
+| ----------- | ---------- | ------------ |
+| A           | 2          | 25           |
+| B           | 3          | 40           |
+
+---
+
