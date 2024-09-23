@@ -157,3 +157,35 @@ WHERE dns_rnk = 1;
 | B           | curry        | 2              |
 | B           | sushi        | 2              |
 | C           | ramen        | 3              |
+
+---
+
+### 6. Which item was purchased first by the customer after they became a member?
+
+```sql
+WITH CTE AS (
+  SELECT
+      s.customer_id,
+      s.order_date,
+      mn.product_name,
+      DENSE_RANK() OVER(PARTITION BY s.customer_id ORDER BY s.order_date) AS dns_rnk
+  FROM dannys_diner.sales s
+  INNER JOIN dannys_diner.members mmb
+      ON s.customer_id = mmb.customer_id
+      AND order_date >= join_date
+  INNER JOIN dannys_diner.menu mn
+      ON s.product_id = mn.product_id
+)
+
+SELECT
+    customer_id,
+    product_name
+FROM CTE
+WHERE dns_rnk = 1;
+```
+#### Result set
+
+| customer_id | product_name |
+| ----------- | ------------ |
+| A           | curry        |
+| B           | sushi        |
