@@ -114,3 +114,46 @@ LIMIT 1;
 | product_name | purchase_count |
 | ------------ | -------------- |
 | ramen        | 8              |
+
+---
+
+### 5. Which item was the most popular for each customer?
+
+```sql
+WITH CTE AS (
+  SELECT
+      customer_id,
+      product_name,
+      COUNT(*) AS purchase_count
+  FROM dannys_diner.sales s
+  INNER JOIN dannys_diner.menu m
+      ON s.product_id = m.product_id
+  GROUP BY customer_id, product_name
+  ORDER BY customer_id, purchase_count DESC
+),
+
+CTE1 AS (
+SELECT
+	customer_id,
+  	product_name,
+  	purchase_count,
+  	DENSE_RANK() OVER(PARTITION BY customer_id ORDER BY purchase_count DESC) AS dns_rnk
+FROM CTE
+)
+
+SELECT
+    customer_id,
+    product_name,
+    purchase_count
+FROM CTE1
+WHERE dns_rnk = 1;
+```
+#### Result set
+
+| customer_id | product_name | purchase_count |
+| ----------- | ------------ | -------------- |
+| A           | ramen        | 3              |
+| B           | ramen        | 2              |
+| B           | curry        | 2              |
+| B           | sushi        | 2              |
+| C           | ramen        | 3              |
