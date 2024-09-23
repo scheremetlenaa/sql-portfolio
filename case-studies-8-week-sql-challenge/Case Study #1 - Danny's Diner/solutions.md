@@ -64,3 +64,35 @@ ORDER BY customer_id;
 
 ---
 
+3. What was the first item from the menu purchased by each customer?
+
+```sql
+WITH CTE AS (
+  SELECT
+      *,
+      DENSE_RANK() OVER(PARTITION BY customer_id ORDER BY order_date) AS dns_rnk
+  FROM dannys_diner.sales
+)
+
+SELECT
+    customer_id,
+    product_name
+FROM CTE
+INNER JOIN dannys_diner.menu m
+	ON CTE.product_id = m.product_id
+WHERE dns_rnk = 1
+GROUP BY customer_id, product_name
+ORDER BY customer_id;
+
+```
+#### Result set
+
+| customer_id | product_name |
+| ----------- | ------------ |
+| A           | curry        |
+| A           | sushi        |
+| B           | curry        |
+| C           | ramen        |
+
+---
+
