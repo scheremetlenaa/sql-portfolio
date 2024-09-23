@@ -48,8 +48,8 @@ ORDER BY customer_id;
 
 ```sql
 SELECT
-	customer_id,
-    COUNT(DISTINCT order_date) AS days_visited_count
+   customer_id,
+   COUNT(DISTINCT order_date) AS days_visited_count
 FROM dannys_diner.sales
 GROUP BY customer_id
 ORDER BY customer_id;
