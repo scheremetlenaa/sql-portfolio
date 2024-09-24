@@ -57,3 +57,60 @@ ORDER BY runner_id;
 
 ---
 
+### 3. Is there any relationship between the number of pizzas and how long the order takes to prepare?
+
+```sql
+WITH CTE AS (
+  SELECT
+      co.order_id,
+      COUNT(*) AS pizza_count,
+      EXTRACT(EPOCH FROM (pickup_time::TIMESTAMP - order_time)) / 60 AS time_to_prepare
+  FROM pizza_runner.runner_orders ro
+  INNER JOIN pizza_runner.customer_orders co
+      ON ro.order_id = co.order_id
+      AND cancellation IS NULL
+  GROUP BY co.order_id, ro.pickup_time, co.order_time
+)
+
+SELECT
+     pizza_count,
+     ROUND(AVG(time_to_prepare)::NUMERIC, 2) AS avg_prep_time
+FROM CTE
+GROUP BY pizza_count
+ORDER BY pizza_count;
+```
+#### Result set
+
+| pizza_count | avg_prep_time |
+| ----------- | ------------- |
+| 1           | 12.36         |
+| 2           | 18.38         |
+| 3           | 29.28         |
+
+---
+
+### 4. What was the average distance travelled for each customer?
+
+```sql
+SELECT
+     customer_id,
+     ROUND(AVG(distance::NUMERIC), 2) AS avg_distance
+FROM pizza_runner.customer_orders co
+INNER JOIN pizza_runner.runner_orders ro
+     ON co.order_id = ro.order_id
+     AND cancellation IS NULL
+GROUP BY customer_id
+ORDER BY customer_id;
+```
+#### Result set
+
+| customer_id | avg_distance |
+| ----------- | ------------ |
+| 101         | 20.00        |
+| 102         | 16.73        |
+| 103         | 23.40        |
+| 104         | 10.00        |
+| 105         | 25.00        |
+
+---
+
