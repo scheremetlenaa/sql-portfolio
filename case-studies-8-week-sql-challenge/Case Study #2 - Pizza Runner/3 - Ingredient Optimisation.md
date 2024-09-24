@@ -72,7 +72,7 @@ INNER JOIN pizza_runner.pizza_names pn
 ```sql
 WITH CTE AS (  
 SELECT
-	UNNEST(STRING_TO_ARRAY(extras, ',')::INTEGER[]) AS extra_id
+    UNNEST(STRING_TO_ARRAY(extras, ',')::INTEGER[]) AS extra_id
 FROM pizza_runner.customer_orders
 ),
 
