@@ -202,3 +202,61 @@ ORDER BY customer_id;
 
 ---
 
+### 9. What was the total volume of pizzas ordered for each hour of the day?
+
+```sql
+SELECT
+     EXTRACT(HOUR FROM order_time) AS hour_of_day,
+     COUNT(*) AS pizza_count
+FROM pizza_runner.customer_orders co
+GROUP BY EXTRACT(HOUR FROM order_time)
+ORDER BY EXTRACT(HOUR FROM order_time);
+```
+#### Result set
+
+| hour_of_day | pizza_count |
+| ----------- | ----------- |
+| 11          | 1           |
+| 13          | 3           |
+| 18          | 3           |
+| 19          | 1           |
+| 21          | 3           |
+| 23          | 3           |
+
+---
+
+### 10. What was the volume of orders for each day of the week?
+
+```sql
+WITH CTE AS (
+  SELECT
+      EXTRACT(ISODOW FROM order_time) AS day_of_week,
+      COUNT(*) AS orders_count
+  FROM pizza_runner.customer_orders co
+  GROUP BY EXTRACT(ISODOW FROM order_time)
+  ORDER BY EXTRACT(ISODOW FROM order_time)
+)
+
+SELECT
+    CASE
+        WHEN day_of_week = 1 THEN 'Monday'
+        WHEN day_of_week = 2 THEN 'Tuesday'
+        WHEN day_of_week = 3 THEN 'Wednesday'
+        WHEN day_of_week = 4 THEN 'Thursday'
+        WHEN day_of_week = 5 THEN 'Friday'
+        WHEN day_of_week = 6 THEN 'Saturday'
+        WHEN day_of_week = 7 THEN 'Sunday'
+    END AS day_of_week,
+    orders_count
+FROM CTE;
+```
+#### Result set
+
+| day_of_week | orders_count |
+| ----------- | ------------ |
+| Wednesday   | 5            |
+| Thursday    | 3            |
+| Friday      | 1            |
+| Saturday    | 5            |
+
+---
