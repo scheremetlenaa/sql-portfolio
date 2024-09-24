@@ -68,3 +68,25 @@ GROUP BY runner_id;
 
 ---
 
+### 4. How many of each type of pizza was delivered?
+
+```sql
+SELECT
+     co.pizza_id,
+     COUNT(*) AS delivered_pizza_count
+FROM pizza_runner.customer_orders co
+INNER JOIN pizza_runner.runner_orders ro
+     ON co.order_id = ro.order_id
+     AND ro.cancellation IS NULL
+GROUP BY pizza_id;
+```
+
+#### Result set
+
+| pizza_id | delivered_pizza_count |
+| -------- | --------------------- |
+| 1        | 9                     |
+| 2        | 3                     |
+
+---
+
