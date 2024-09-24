@@ -93,3 +93,31 @@ ORDER BY pizza_name;
 
 ---
 
+### 5. How many Vegetarian and Meatlovers were ordered by each customer?
+
+```sql
+SELECT
+     co.customer_id,
+     pn.pizza_name,
+     COUNT(*) AS order_count_by_type
+FROM pizza_runner.customer_orders co
+INNER JOIN pizza_runner.pizza_names pn
+     ON co.pizza_id = pn.pizza_id
+GROUP BY customer_id, pizza_name
+ORDER BY customer_id, pizza_name;
+```
+#### Result set
+
+| customer_id | pizza_name | order_count_by_type |
+| ----------- | ---------- | ------------------- |
+| 101         | Meatlovers | 2                   |
+| 101         | Vegetarian | 1                   |
+| 102         | Meatlovers | 2                   |
+| 102         | Vegetarian | 1                   |
+| 103         | Meatlovers | 3                   |
+| 103         | Vegetarian | 1                   |
+| 104         | Meatlovers | 3                   |
+| 105         | Vegetarian | 1                   |
+
+---
+
