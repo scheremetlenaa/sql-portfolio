@@ -142,3 +142,63 @@ LIMIT 1;
 
 ---
 
+### 7. For each customer, how many delivered pizzas had at least 1 change and how many had no changes?
+
+```sql
+SELECT
+     customer_id,
+     SUM(CASE
+          WHEN exclusions IS NOT NULL OR extras IS NOT NULL THEN 1
+          ELSE 0
+     END) AS count_with_changes,
+     SUM(CASE
+          WHEN exclusions IS NULL AND extras IS NULL THEN 1
+     ELSE 0
+     END) AS count_with_no_changes
+FROM pizza_runner.customer_orders co
+INNER JOIN pizza_runner.runner_orders ro
+     ON co.order_id = ro.order_id
+     AND cancellation IS NULL
+GROUP BY customer_id
+ORDER BY customer_id;
+```
+#### Result set
+
+| customer_id | count_with_changes | count_with_no_changes |
+| ----------- | ------------------ | --------------------- |
+| 101         | 0                  | 2                     |
+| 102         | 0                  | 3                     |
+| 103         | 3                  | 0                     |
+| 104         | 2                  | 1                     |
+| 105         | 1                  | 0                     |
+
+---
+
+### 8. How many pizzas were delivered that had both exclusions and extras?
+
+```sql
+SELECT
+     customer_id,
+     SUM(CASE
+          WHEN exclusions IS NOT NULL AND extras IS NOT NULL THEN 1
+          ELSE 0
+     END) AS count_with_exclusions_and_extras
+FROM pizza_runner.customer_orders co
+INNER JOIN pizza_runner.runner_orders ro
+     ON co.order_id = ro.order_id
+     AND cancellation IS NULL
+GROUP BY customer_id
+ORDER BY customer_id;
+```
+#### Result set
+
+| customer_id | count_with_exclusions_and_extras |
+| ----------- | -------------------------------- |
+| 101         | 0                                |
+| 102         | 0                                |
+| 103         | 0                                |
+| 104         | 1                                |
+| 105         | 0                                |
+
+---
+
