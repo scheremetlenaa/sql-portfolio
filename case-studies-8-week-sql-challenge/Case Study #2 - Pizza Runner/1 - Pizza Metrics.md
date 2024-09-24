@@ -121,3 +121,24 @@ ORDER BY customer_id, pizza_name;
 
 ---
 
+### 6. What was the maximum number of pizzas delivered in a single order?
+
+```sql
+SELECT
+     COUNT(*) AS max_pizza_num
+FROM pizza_runner.customer_orders co
+INNER JOIN pizza_runner.runner_orders ro
+     ON co.order_id = ro.order_id
+     AND ro.cancellation IS NULL
+GROUP BY co.order_id
+ORDER BY max_pizza_num DESC
+LIMIT 1;
+```
+#### Result set
+
+| max_pizza_num |
+| ------------- |
+| 3             |
+
+---
+
