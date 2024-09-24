@@ -114,3 +114,68 @@ ORDER BY customer_id;
 
 ---
 
+### 5. What was the difference between the longest and shortest delivery times for all orders?
+
+```sql
+SELECT
+     MAX(duration::NUMERIC) - MIN(duration::NUMERIC) AS difference_max_min_time
+FROM pizza_runner.runner_orders
+WHERE duration IS NOT NULL;
+```
+#### Result set
+
+| difference_max_min_time |
+| ----------------------- |
+| 30                      |
+
+---
+
+### 6. What was the average speed for each runner for each delivery and do you notice any trend for these values?
+
+```sql
+SELECT
+     runner_id,
+     order_id,
+     distance::NUMERIC AS distance_in_km,
+     ROUND(duration::NUMERIC / 60, 2) as duration_in_hour,
+     ROUND(distance::NUMERIC / (duration::NUMERIC / 60), 2) AS avg_spd
+FROM pizza_runner.runner_orders
+WHERE cancellation IS NULL
+ORDER BY runner_id, order_id;
+```
+#### Result set
+
+| runner_id | order_id | distance_in_km | duration_in_hour | avg_spd |
+| --------- | -------- | -------------- | ---------------- | ------- |
+| 1         | 1        | 20             | 0.53             | 37.50   |
+| 1         | 2        | 20             | 0.45             | 44.44   |
+| 1         | 3        | 13.4           | 0.33             | 40.20   |
+| 1         | 10       | 10             | 0.17             | 60.00   |
+| 2         | 4        | 23.4           | 0.67             | 35.10   |
+| 2         | 7        | 25             | 0.42             | 60.00   |
+| 2         | 8        | 23.4           | 0.25             | 93.60   |
+| 3         | 5        | 10             | 0.25             | 40.00   |
+
+---
+
+### 7. What is the successful delivery percentage for each runner?
+
+```SQL
+SELECT
+     runner_id,
+     COUNT(*) AS all_orders_cnt,
+     SUM(CASE WHEN cancellation IS NULL THEN 1 ELSE 0 END) AS delivered_orders_cnt,
+     ROUND((SUM(CASE WHEN cancellation IS NULL THEN 1 ELSE 0 END) * 100.00/ COUNT(*)), 2) AS successful_delivery_pct
+FROM pizza_runner.runner_orders
+GROUP BY runner_id
+ORDER BY runner_id;
+```
+#### Result set
+
+| runner_id | all_orders_cnt | delivered_orders_cnt | successful_delivery_pct |
+| --------- | -------------- | -------------------- | ----------------------- |
+| 1         | 4              | 4                    | 100.00                  |
+| 2         | 4              | 3                    | 75.00                   |
+| 3         | 2              | 1                    | 50.00                   |
+
+---
