@@ -47,3 +47,24 @@ FROM pizza_runner.customer_orders;
 
 ---
 
+### 3. How many successful orders were delivered by each runner?
+
+```sql
+SELECT
+     runner_id,
+     COUNT(*) AS successful_orders_count
+FROM pizza_runner.runner_orders
+WHERE cancellation IS NULL
+GROUP BY runner_id;
+```
+
+#### Result set
+
+| runner_id | successful_orders_count |
+| --------- | ----------------------- |
+| 1         | 4                       |
+| 2         | 3                       |
+| 3         | 1                       |
+
+---
+
