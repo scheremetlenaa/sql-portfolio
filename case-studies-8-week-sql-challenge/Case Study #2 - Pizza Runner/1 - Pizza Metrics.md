@@ -72,21 +72,24 @@ GROUP BY runner_id;
 
 ```sql
 SELECT
-     co.pizza_id,
+     pn.pizza_name,
      COUNT(*) AS delivered_pizza_count
 FROM pizza_runner.customer_orders co
 INNER JOIN pizza_runner.runner_orders ro
      ON co.order_id = ro.order_id
      AND ro.cancellation IS NULL
-GROUP BY pizza_id;
+INNER JOIN pizza_runner.pizza_names pn
+     ON co.pizza_id = pn.pizza_id
+GROUP BY pizza_name
+ORDER BY pizza_name;
 ```
 
 #### Result set
 
-| pizza_id | delivered_pizza_count |
-| -------- | --------------------- |
-| 1        | 9                     |
-| 2        | 3                     |
+| pizza_name | delivered_pizza_count |
+| ---------- | --------------------- |
+| Meatlovers | 9                     |
+| Vegetarian | 3                     |
 
 ---
 
