@@ -88,3 +88,42 @@ SELECT (SELECT total_earnings FROM pizza_cost) + (SELECT topping_cost FROM toppi
 
 ### 3. The Pizza Runner team now wants to add an additional ratings system that allows customers to rate their runner, how would you design an additional table for this new dataset - generate a schema for this new table and insert your own data for ratings for each successful customer order between 1 to 5.
 
+```sql
+DROP TABLE IF EXISTS pizza_runner.runner_rating;
+
+CREATE TABLE pizza_runner.runner_rating (
+  "order_id" INTEGER,
+  "rating" INTEGER,
+  "comment" VARCHAR(255)
+);
+
+INSERT INTO pizza_runner.runner_rating ("order_id", "rating", "comment")
+VALUES
+    ('1', '3', 'great service, but delivery was too slow..'),
+    ('2', '4', 'good'),
+    ('3', '1', 'Pizza was COLD'),
+    ('4', '5', 'Very fast delivery'),
+    ('5', '4', 'OK'),
+    ('6', '5', NULL),
+    ('7', '4', 'Good pizza, polite runner'),
+    ('8', '4', NULL),
+    ('10', '5', 'Everything is OK!');
+
+SELECT * FROM pizza_runner.runner_rating;
+```
+### Result set
+
+| order_id | rating | comment                                    |
+| -------- | ------ | ------------------------------------------ |
+| 1        | 3      | great service, but delivery was too slow.. |
+| 2        | 4      | good                                       |
+| 3        | 1      | Pizza was COLD                             |
+| 4        | 5      | Very fast delivery                         |
+| 5        | 4      | OK                                         |
+| 6        | 5      | NULL                                       |
+| 7        | 4      | Good pizza, polite runner                  |
+| 8        | 4      | NULL                                       |
+| 10       | 5      | Everything is OK!                          |
+
+---
+
