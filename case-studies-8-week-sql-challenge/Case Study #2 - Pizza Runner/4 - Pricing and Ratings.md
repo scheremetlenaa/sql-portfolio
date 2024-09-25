@@ -127,3 +127,52 @@ SELECT * FROM pizza_runner.runner_rating;
 
 ---
 
+### 4. Using your newly generated table - can you join all of the information together to form a table which has the following information for successful deliveries?
+- customer_id
+- order_id
+- runner_id
+- rating
+- order_time
+- pickup_time
+- Time between order and pickup
+- Delivery duration
+- Average speed
+- Total number of pizzas
+
+```sql
+SELECT
+    co.customer_id,
+    ro.order_id,
+    ro.runner_id,
+    rr.rating,
+    co.order_time,
+    ro.pickup_time,
+    ROUND((EXTRACT(EPOCH FROM (ro.pickup_time::TIMESTAMP - co.order_time)) / 60)::NUMERIC, 0) AS prep_time_in_min,
+    ro.duration AS delivery_duration,
+    ROUND(ro.distance::NUMERIC / (ro.duration::NUMERIC / 60), 2) AS average_speed,
+    COUNT(co.pizza_id) AS pizza_count
+FROM pizza_runner.runner_orders ro
+LEFT JOIN pizza_runner.runner_rating rr
+    ON ro.order_id = rr.order_id
+INNER JOIN pizza_runner.customer_orders co
+    ON ro.order_id = co.order_id
+GROUP BY 1, 2, 3, 4, 6, 8, co.order_time, ro.distance
+ORDER BY 1, 2;
+```
+#### Result set
+
+| customer_id | order_id | runner_id | rating | order_time               | pickup_time         | prep_time_in_min | delivery_duration | average_speed | pizza_count |
+| ----------- | -------- | --------- | ------ | ------------------------ | ------------------- | ---------------- | ----------------- | ------------- | ----------- |
+| 101         | 1        | 1         | 3      | 2020-01-01T18:05:02.000Z | 2020-01-01 18:15:34 | 11               | 32                | 37.50         | 1           |
+| 101         | 2        | 1         | 4      | 2020-01-01T19:00:52.000Z | 2020-01-01 19:10:54 | 10               | 27                | 44.44         | 1           |
+| 101         | 6        | 3         | NULL   | 2020-01-08T21:03:13.000Z |                     | NULL             | NULL              | NULL          | 1           |
+| 102         | 3        | 1         | 1      | 2020-01-02T23:51:23.000Z | 2020-01-03 00:12:37 | 21               | 20                | 40.20         | 2           |
+| 102         | 8        | 2         | 4      | 2020-01-09T23:54:33.000Z | 2020-01-10 00:15:02 | 20               | 15                | 93.60         | 1           |
+| 103         | 4        | 2         | 5      | 2020-01-04T13:23:46.000Z | 2020-01-04 13:53:03 | 29               | 40                | 35.10         | 3           |
+| 103         | 9        | 2         | NULL   | 2020-01-10T11:22:59.000Z |                     | NULL             | NULL              | NULL          | 1           |
+| 104         | 5        | 3         | 4      | 2020-01-08T21:00:29.000Z | 2020-01-08 21:10:57 | 10               | 15                | 40.00         | 1           |
+| 104         | 10       | 1         | 5      | 2020-01-11T18:34:49.000Z | 2020-01-11 18:50:20 | 16               | 10                | 60.00         | 2           |
+| 105         | 7        | 2         | 4      | 2020-01-08T21:20:29.000Z | 2020-01-08 21:30:45 | 10               | 25                | 60.00         | 1           |
+
+---
+
