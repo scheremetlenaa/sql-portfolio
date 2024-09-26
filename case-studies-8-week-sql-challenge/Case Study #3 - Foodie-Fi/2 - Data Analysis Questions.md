@@ -110,3 +110,22 @@ ORDER BY 1;
 
 ---
 
+### 4. What is the customer count and percentage of customers who have churned rounded to 1 decimal place?
+
+```sql
+SELECT
+    COUNT(*) AS churned_customers,
+    ROUND(COUNT(*) * 100.0 / (SELECT COUNT(DISTINCT customer_id) FROM foodie_fi.subscriptions), 1) AS churned_pct
+FROM foodie_fi.subscriptions s
+INNER JOIN foodie_fi.plans p
+    ON s.plan_id = p.plan_id
+WHERE plan_name = 'churn';
+```
+#### Result set
+
+| churned_customers | churned_pct |
+| ----------------- | ----------- |
+| 307               | 30.7        |
+
+---
+
