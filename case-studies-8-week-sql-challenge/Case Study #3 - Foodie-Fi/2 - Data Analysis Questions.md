@@ -129,6 +129,8 @@ WHERE plan_name = 'churn';
 
 ---
 
+### 5. How many customers have churned straight after their initial free trial - what percentage is this rounded to the nearest whole number?
+
 ```sql
 WITH CTE AS (
 SELECT
@@ -152,6 +154,38 @@ AND next_plan = 'churn';
 | cnt_churn_after_trial | pct_churn_after_trial |
 | --------------------- | --------------------- |
 | 92                    | 9                     |
+
+---
+
+### 6. What is the number and percentage of customer plans after their initial free trial?
+
+```sql
+WITH CTE AS (
+SELECT
+    s.customer_id,
+    p.plan_name,
+    LEAD(plan_name) OVER(PARTITION BY customer_id ORDER BY start_date) AS next_plan
+FROM foodie_fi.subscriptions s
+INNER JOIN foodie_fi.plans p
+	ON s.plan_id = p.plan_id
+)
+
+SELECT
+    next_plan AS plan_name,
+    COUNT(*) AS subs_cnt,
+    ROUND(COUNT(*) * 100.0 / (SELECT COUNT(DISTINCT customer_id) FROM foodie_fi.subscriptions), 0) AS subs_pct
+FROM CTE
+WHERE plan_name = 'trial'
+AND next_plan <> 'churn'
+GROUP BY next_plan;
+```
+#### Result set
+
+| plan_name     | subs_cnt | subs_pct |
+| ------------- | -------- | -------- |
+| basic monthly | 546      | 55       |
+| pro annual    | 37       | 4        |
+| pro monthly   | 325      | 33       |
 
 ---
 
