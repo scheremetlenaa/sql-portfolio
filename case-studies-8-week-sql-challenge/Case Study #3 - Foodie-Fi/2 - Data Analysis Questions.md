@@ -129,3 +129,29 @@ WHERE plan_name = 'churn';
 
 ---
 
+```sql
+WITH CTE AS (
+SELECT
+    s.customer_id,
+    p.plan_name,
+    LEAD(plan_name) OVER(PARTITION BY customer_id ORDER BY start_date) AS next_plan
+FROM foodie_fi.subscriptions s
+INNER JOIN foodie_fi.plans p
+    ON s.plan_id = p.plan_id
+)
+
+SELECT
+    COUNT(*) AS cnt_churn_after_trial,
+    FLOOR(COUNT(*) * 100.0 / (SELECT COUNT(DISTINCT customer_id) FROM foodie_fi.subscriptions)) AS pct_churn_after_trial
+FROM CTE
+WHERE plan_name = 'trial'
+AND next_plan = 'churn';
+```
+#### Result set
+
+| cnt_churn_after_trial | pct_churn_after_trial |
+| --------------------- | --------------------- |
+| 92                    | 9                     |
+
+---
+
