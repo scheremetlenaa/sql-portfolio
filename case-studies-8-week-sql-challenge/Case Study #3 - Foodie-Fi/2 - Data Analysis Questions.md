@@ -86,3 +86,27 @@ FROM CTE;
 
 ---
 
+### 3. What plan start_date values occur after the year 2020 for our dataset? Show the breakdown by count of events for each plan_name
+
+```sql
+SELECT
+    p.plan_name,
+    COUNT(*) AS dist
+FROM foodie_fi.subscriptions s
+INNER JOIN foodie_fi.plans p
+	ON s.plan_id = p.plan_id
+WHERE EXTRACT(YEAR FROM s.start_date) > 2020
+GROUP BY 1
+ORDER BY 1;
+```
+#### Result set
+
+| plan_name     | dist |
+| ------------- | ---- |
+| basic monthly | 8    |
+| churn         | 71   |
+| pro annual    | 63   |
+| pro monthly   | 60   |
+
+---
+
