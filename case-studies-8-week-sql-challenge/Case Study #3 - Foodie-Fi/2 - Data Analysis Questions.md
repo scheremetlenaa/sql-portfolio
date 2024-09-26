@@ -189,3 +189,173 @@ GROUP BY next_plan;
 
 ---
 
+### 7. What is the customer count and percentage breakdown of all 5 plan_name values at 2020-12-31?
+
+```sql
+WITH CTE AS (
+  SELECT
+      s.customer_id,
+      p.plan_name,
+      s.start_date,
+      LEAD(s.start_date) OVER(PARTITION BY s.customer_id ORDER BY s.start_date) AS next_date
+  FROM foodie_fi.subscriptions s
+  INNER JOIN foodie_fi.plans p
+      ON s.plan_id = p.plan_id
+  WHERE s.start_date <= '2020-12-31'
+)
+
+SELECT
+    plan_name,
+    COUNT(DISTINCT customer_id) AS customer_cnt,
+    ROUND(COUNT(DISTINCT customer_id) * 100.0 / (SELECT COUNT(DISTINCT customer_id) FROM foodie_fi.subscriptions), 0) AS customer_pct
+FROM CTE
+WHERE next_date IS NULL
+GROUP BY 1;
+```
+#### Result set
+| plan_name     | customer_cnt | customer_pct |
+| ------------- | ------------ | ------------ |
+| basic monthly | 224          | 22           |
+| churn         | 236          | 24           |
+| pro annual    | 195          | 20           |
+| pro monthly   | 326          | 33           |
+| trial         | 19           | 2            |
+
+---
+
+### 8. How many customers have upgraded to an annual plan in 2020?
+
+```sql
+SELECT
+    COUNT(*) AS pro_yearly_cnt
+FROM foodie_fi.subscriptions s
+INNER JOIN foodie_fi.plans p
+    ON s.plan_id = p.plan_id
+WHERE EXTRACT(YEAR FROM start_date) = 2020
+AND p.plan_name = 'pro annual';
+```
+#### Result set
+
+| pro_yearly_cnt |
+| -------------- |
+| 195            |
+
+---
+
+### 9. How many days on average does it take for a customer to an annual plan from the day they join Foodie-Fi?
+
+```sql
+WITH CTE AS (
+  SELECT
+      *
+  FROM foodie_fi.subscriptions s
+  INNER JOIN foodie_fi.plans p
+      ON s.plan_id = p.plan_id
+  WHERE p.plan_name = 'trial'
+),
+
+CTE1 AS (
+  SELECT
+      *
+  FROM foodie_fi.subscriptions s
+  INNER JOIN foodie_fi.plans p
+      ON s.plan_id = p.plan_id
+  WHERE p.plan_name = 'pro annual'
+)
+
+SELECT
+    ROUND(AVG(CTE1.start_date - CTE.start_date)) AS avg_conversion
+FROM CTE
+INNER JOIN CTE1
+    ON CTE.customer_id = CTE1.customer_id;
+```
+#### Result set
+
+| avg_conversion |
+| -------------- |
+| 105            |
+
+---
+
+### 10. Can you further breakdown this average value into 30 day periods (i.e. 0-30 days, 31-60 days etc)
+
+```sql
+WITH CTE AS (
+  SELECT
+      *
+  FROM foodie_fi.subscriptions s
+  INNER JOIN foodie_fi.plans p
+      ON s.plan_id = p.plan_id
+  WHERE p.plan_name = 'trial'
+),
+
+CTE1 AS (
+  SELECT
+      *
+  FROM foodie_fi.subscriptions s
+  INNER JOIN foodie_fi.plans p
+      ON s.plan_id = p.plan_id
+  WHERE p.plan_name = 'pro annual'
+),
+
+CTE3 AS (
+SELECT
+	(CTE1.start_date - CTE.start_date) AS conversion
+FROM CTE
+INNER JOIN CTE1
+	ON CTE.customer_id = CTE1.customer_id
+)
+
+SELECT
+    CASE
+    	WHEN conversion <= 30 THEN '0-30 days'
+        WHEN conversion > 30 AND conversion <= 60 THEN '31-60 days'
+        WHEN conversion > 60 AND conversion <= 90 THEN '61-90 days'
+        WHEN conversion > 90 AND conversion <= 120 THEN '90-120 days'
+        ELSE 'over 120 days'
+    END AS period,
+    COUNT(*) AS customers_cnt,
+    ROUND(AVG(conversion)) AS avg_conversion
+FROM CTE3
+GROUP BY 1
+ORDER BY 1;
+```
+#### Result set
+
+| period        | customers_cnt | avg_conversion |
+| ------------- | ------------- | -------------- |
+| 0-30 days     | 49            | 10             |
+| 31-60 days    | 24            | 42             |
+| 61-90 days    | 34            | 71             |
+| 90-120 days   | 35            | 101            |
+| over 120 days | 116           | 168            |
+
+---
+
+### 11. How many customers downgraded from a pro monthly to a basic monthly plan in 2020?
+
+```sql
+WITH CTE AS (
+  SELECT
+      s.customer_id,
+      p.plan_name,
+      LEAD(p.plan_name) OVER(PARTITION BY s.customer_id ORDER BY s.start_date) AS next_plan,
+      LEAD(s.start_date) OVER(PARTITION BY s.customer_id ORDER BY s.start_date) AS next_date
+  FROM foodie_fi.subscriptions s
+  INNER JOIN foodie_fi.plans p
+      ON s.plan_id = p.plan_id
+)
+
+SELECT
+    COUNT(*) AS downgrade_cnt
+FROM CTE
+WHERE plan_name = 'pro monthly'
+AND next_plan = 'basic monthly'
+AND EXTRACT(YEAR FROM next_date) = 2020;
+```
+#### Result set
+| downgrade_cnt |
+| ------------- |
+| 0             |
+
+---
