@@ -66,7 +66,7 @@ Use your 2 new output tables - answer the following questions:
 4. What is the average conversion rate from view to cart add?
 5. What is the average conversion rate from cart add to purchase?
 
-**3. Campaigns Analysis**
+**4. Campaigns Analysis**
 
 Generate a table that has 1 single row for every unique visit_id record and has the following columns:
 
