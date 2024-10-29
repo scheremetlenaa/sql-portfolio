@@ -41,7 +41,7 @@ SELECT * FROM fresh_segments.interest_metrics;
 
 ```sql
 SELECT
-	  month_year,
+    month_year,
     COUNT(*)
 FROM fresh_segments.interest_metrics
 GROUP BY 1
@@ -78,7 +78,7 @@ SELECT
     SUM(CASE WHEN imp.id IS NULL THEN 1 ELSE 0 END) AS not_in_metrics
 FROM fresh_segments.interest_metrics imt
 FULL OUTER JOIN fresh_segments.interest_map imp
-	ON imt.interest_id::NUMERIC = imp.id;
+    ON imt.interest_id::NUMERIC = imp.id;
 ```
 
 #### Result set
@@ -93,7 +93,7 @@ FULL OUTER JOIN fresh_segments.interest_map imp
 
 ```sql
 SELECT
-	  id,
+    id,
     COUNT(*) AS records_count
 FROM fresh_segments.interest_map
 GROUP BY 1;
@@ -130,7 +130,7 @@ The result table is truncated.
 
 ```sql
 SELECT
-  	imt.*,
+    imt.*,
     imp.interest_name,
     imp.interest_summary,
     imp.created_at,
@@ -163,17 +163,17 @@ WHERE interest_id::NUMERIC = 21246;
 
 ```sql
 SELECT
-	COUNT(*)
+     COUNT(*)
 FROM fresh_segments.interest_metrics imt
 LEFT JOIN fresh_segments.interest_map imp
-	ON imt.interest_id::NUMERIC = imp.id
+     ON imt.interest_id::NUMERIC = imp.id
 WHERE month_year < created_at;
 
 SELECT
-	COUNT(*)
+     COUNT(*)
 FROM fresh_segments.interest_metrics imt
 LEFT JOIN fresh_segments.interest_map imp
-	ON imt.interest_id::NUMERIC = imp.id
+     ON imt.interest_id::NUMERIC = imp.id
 WHERE month_year < DATE_TRUNC('MONTH', created_at);
 ```
 
