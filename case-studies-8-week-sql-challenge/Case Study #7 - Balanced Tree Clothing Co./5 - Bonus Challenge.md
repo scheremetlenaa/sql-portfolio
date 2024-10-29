@@ -26,7 +26,7 @@ WITH CTE AS (
 )
 
 SELECT
-	  product_id,
+    product_id,
     price,
     CONCAT(style_name, ' ', segment_name, ' - ', category_name) AS product_name,
     category_id,
